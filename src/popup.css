@@ -1,0 +1,200 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f5f6f8;
+  color: #111827;
+}
+
+.popup {
+  width: 416px;
+  padding: 12px 12px 10px;
+  box-sizing: border-box;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 0;
+  background: transparent;
+}
+
+.tab-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 10px 9px;
+  border: 1px solid #d5dbe3;
+  border-radius: 4px;
+  background: #eef1f5;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.tab-label {
+  pointer-events: none;
+}
+
+.tab-count {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cfd6df;
+  border-radius: 3px;
+  background: #f8fafc;
+  color: #5b6878;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.tab-button.is-active {
+  background: #ffffff;
+  border-color: #c9d1db;
+  color: #111827;
+  box-shadow: inset 0 -2px 0 #1a73e8;
+}
+
+.tab-button.is-active .tab-count {
+  border-color: #bfd3fb;
+  background: #eef4ff;
+  color: #1a73e8;
+}
+
+.tab-panel {
+  display: block;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.is-hidden {
+  display: none;
+}
+
+.editor {
+  width: 100%;
+  height: 246px;
+  box-sizing: border-box;
+  resize: none;
+  padding: 13px 14px;
+  border: 1px solid #d2d8e1;
+  border-radius: 3px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 13px;
+  line-height: 1.55;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.editor::placeholder {
+  color: #9aa4b2;
+}
+
+.editor[readonly] {
+  background: #fbfcfd;
+}
+
+.editor:focus,
+button:focus-visible {
+  outline: none;
+}
+
+.editor:focus {
+  border-color: #8ab4f8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+.meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
+  margin: 4px 0 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.meta:has([aria-live]:empty) {
+  margin: 0 0 12px;
+}
+
+.meta [aria-live]:empty {
+  display: none;
+}
+
+#statusMessage[data-kind='error'],
+#saveStatusMessage[data-kind='error'] {
+  color: #c62828;
+}
+
+#statusMessage[data-kind='success'],
+#saveStatusMessage[data-kind='success'] {
+  color: #1b7f3b;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+button {
+  flex: 1;
+  min-height: 40px;
+  padding: 8px 12px 9px;
+  border: 1px solid #d1d7e0;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: #f8fafc;
+  border-color: #c5cdd8;
+  transform: translateY(-1px);
+}
+
+button:focus-visible {
+  border-color: #8ab4f8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12);
+}
+
+button.secondary {
+  background: #ffffff;
+}
+
+button.primary {
+  background: #1a73e8;
+  border-color: #1a73e8;
+  color: #ffffff;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+button.primary:hover {
+  background: #1765cc;
+  border-color: #1765cc;
+}
+
+input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+}

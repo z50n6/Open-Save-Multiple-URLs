@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Open-Save-Multiple-URLs</title>
+    <link rel="stylesheet" href="./src/popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <nav class="tabs" aria-label="功能切换">
+        <button id="openTabButton" class="tab-button is-active" type="button" data-tab="open">
+          <span class="tab-label">Open URLs</span>
+          <span id="tabCount" class="tab-count">0</span>
+        </button>
+        <button id="saveTabButton" class="tab-button" type="button" data-tab="save">
+          <span class="tab-label">Save URLs</span>
+          <span id="savedCount" class="tab-count">0</span>
+        </button>
+      </nav>
+
+      <section id="openPanel" class="tab-panel">
+        <textarea
+          id="urlInput"
+          class="editor"
+          rows="12"
+          spellcheck="false"
+          placeholder="每行一个 URL，粘贴后直接点击 Open URLs。"
+        ></textarea>
+        <div class="meta">
+          <span id="statusMessage" aria-live="polite"></span>
+        </div>
+
+        <div class="button-group single">
+          <button id="clearInputButton" class="secondary" type="button">清空</button>
+          <button id="openUrlsButton" class="secondary" type="button">Open URLs</button>
+        </div>
+      </section>
+
+      <section id="savePanel" class="tab-panel is-hidden">
+        <textarea
+          id="savedUrlOutput"
+          class="editor"
+          rows="12"
+          spellcheck="false"
+          readonly
+          placeholder="当前窗口的标签页 URL 会自动显示在这里。"
+        ></textarea>
+        <div class="meta">
+          <span id="saveStatusMessage" aria-live="polite"></span>
+        </div>
+
+        <div class="button-group">
+          <button id="copyUrlsButton" class="secondary" type="button">复制</button>
+          <button id="exportUrlsButton" class="secondary" type="button">导出 TXT</button>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/popup.js"></script>
+  </body>
+  </html>

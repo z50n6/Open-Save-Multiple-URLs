@@ -1,0 +1,19 @@
+{
+  "name": "Open-Save-Multiple-URLs",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Open and save multiple URLs in one extension.",
+  "icons": {
+    "128": "open-save-multiple-urls.png"
+  },
+  "action": {
+    "default_icon": "open-save-multiple-urls.png",
+    "default_popup": "browseraction.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": ["storage", "tabs", "search", "tabGroups"],
+  "incognito": "split"
+}
