@@ -76,11 +76,7 @@ function exportCurrentText(text) {
 function buildRequest() {
   return {
     text: elements.urlInput.value,
-    deduplicate: true,
-    randomOrder: false,
-    reverseOrder: false,
-    treatAsSearchQuery: false,
-    selectedTabGroupId: -1
+    deduplicate: true
   }
 }
 

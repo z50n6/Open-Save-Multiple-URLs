@@ -14,6 +14,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["storage", "tabs", "search", "tabGroups"],
+  "permissions": ["storage", "tabs"],
   "incognito": "split"
 }
