@@ -32,7 +32,13 @@ Open-Save-Multiple-URLs 是一个用于批量打开和保存标签页 URL 的 Ch
 
 ## 界面截图
 
-![Open-Save-Multiple-URLs](./screenshot.png)
+
+
+![image-20260515103754828](imgs/image-20260515103754828.png)、
+
+
+
+![image-20260515103720751](imgs/image-20260515103720751.png)
 
 ## 界面说明
 
