@@ -126,13 +126,12 @@ export async function openTabsFromRequest(request) {
           color: defaultTabGroupColor,
           collapsed: false
         })
-        return
+      } else {
+        console.warn('Open-Save-Multiple-URLs: failed to resolve tab group id', {
+          createdTabIds,
+          groupedId
+        })
       }
-
-      console.warn('Open-Save-Multiple-URLs: failed to resolve tab group id', {
-        createdTabIds,
-        groupedId
-      })
     } catch (error) {
       console.error('Open-Save-Multiple-URLs: failed to color tab group', error)
     }
