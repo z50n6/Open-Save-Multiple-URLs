@@ -1,6 +1,10 @@
 export const OPEN_TABS_ACTION = 'open-tabs'
 
 const lineBreakPattern = /\r\n?|\n/g
+const defaultTabGroupColor = 'red'
+const noTabGroupId = -1
+const groupLookupAttempts = 10
+const groupLookupDelayMs = 100
 
 export function normalizeLines(text, deduplicate) {
   const lines = text
@@ -19,14 +23,119 @@ export function buildTabTargets(text, options) {
   return normalizeLines(text, options.deduplicate)
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function createTab(createProperties) {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.create(createProperties, (tab) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message))
+        return
+      }
+
+      resolve(tab)
+    })
+  })
+}
+
+function getTab(tabId) {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.get(tabId, (tab) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message))
+        return
+      }
+
+      resolve(tab)
+    })
+  })
+}
+
+function groupTabs(tabIds) {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.group({ tabIds }, (groupId) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message))
+        return
+      }
+
+      resolve(groupId)
+    })
+  })
+}
+
+function updateTabGroup(groupId, updateProperties) {
+  return new Promise((resolve, reject) => {
+    chrome.tabGroups.update(groupId, updateProperties, (group) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message))
+        return
+      }
+
+      resolve(group)
+    })
+  })
+}
+
+async function resolveGroupId(createdTabIds, groupedId) {
+  if (typeof groupedId === 'number' && groupedId >= 0) {
+    return groupedId
+  }
+
+  if (!chrome.tabs.get || createdTabIds.length === 0) {
+    return null
+  }
+
+  for (let attempt = 0; attempt < groupLookupAttempts; attempt += 1) {
+    const firstTab = await getTab(createdTabIds[0])
+    if (typeof firstTab.groupId === 'number' && firstTab.groupId > noTabGroupId) {
+      return firstTab.groupId
+    }
+
+    await delay(groupLookupDelayMs)
+  }
+
+  return null
+}
+
 export async function openTabsFromRequest(request) {
   const targets = buildTabTargets(request.text, request)
+  const createdTabIds = []
 
   for (const target of targets) {
-    await chrome.tabs.create({
+    const createdTab = await createTab({
       url: target,
       active: false
     })
+
+    if (typeof createdTab.id === 'number') {
+      createdTabIds.push(createdTab.id)
+    }
+  }
+
+  if (createdTabIds.length > 1 && chrome.tabs.group) {
+    try {
+      const groupedId = await groupTabs(createdTabIds)
+      const groupId = await resolveGroupId(createdTabIds, groupedId)
+
+      if (groupId != null && chrome.tabGroups?.update) {
+        await updateTabGroup(groupId, {
+          title: `Opened URLs (${createdTabIds.length})`,
+          color: defaultTabGroupColor,
+          collapsed: false
+        })
+        return
+      }
+
+      console.warn('Open-Save-Multiple-URLs: failed to resolve tab group id', {
+        createdTabIds,
+        groupedId
+      })
+    } catch (error) {
+      console.error('Open-Save-Multiple-URLs: failed to color tab group', error)
+    }
   }
 }
 
